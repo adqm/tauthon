@@ -310,7 +310,7 @@ class CoverageResults:
             if filename.startswith("<doctest "):
                 continue
 
-            if filename.endswith((".pyc", ".pyo")):
+            if filename.endswith((".pyc", ".pyo", ".tauc", ".tauo")):
                 filename = filename[:-1]
 
             if coverdir is None:

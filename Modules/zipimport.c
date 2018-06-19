@@ -23,9 +23,15 @@ static struct st_zip_searchorder zip_searchorder[] = {
     {"/__init__.pyc", IS_PACKAGE | IS_BYTECODE},
     {"/__init__.pyo", IS_PACKAGE | IS_BYTECODE},
     {"/__init__.py", IS_PACKAGE | IS_SOURCE},
+    {"/__init__.tauc", IS_PACKAGE | IS_BYTECODE},
+    {"/__init__.tauo", IS_PACKAGE | IS_BYTECODE},
+    {"/__init__.tau", IS_PACKAGE | IS_SOURCE},
     {".pyc", IS_BYTECODE},
     {".pyo", IS_BYTECODE},
+    {".tauc", IS_BYTECODE},
+    {".tauo", IS_BYTECODE},
     {".py", IS_SOURCE},
+    {".tau", IS_SOURCE},
     {"", 0}
 };
 
@@ -1060,7 +1066,7 @@ unmarshal_code(const char *pathname, PyObject *data, time_t mtime)
 
     if (size < 8) {
         PyErr_SetString(ZipImportError,
-                        "bad pyc data");
+                        "bad compiled data");
         return NULL;
     }
 

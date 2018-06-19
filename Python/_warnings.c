@@ -503,13 +503,20 @@ setup_context(Py_ssize_t stack_level, PyObject **filename, int *lineno,
             if (file_str == NULL || (len < 0 && PyErr_Occurred()))
             goto handle_error;
 
-        /* if filename.lower().endswith((".pyc", ".pyo")): */
-        if (len >= 4 &&
+        /* if filename.lower().endswith((".pyc", ".pyo", ".tauc", ".tauo")): */
+        if ((len >= 5 &&
+            file_str[len-5] == '.' &&
+            tolower(file_str[len-4]) == 't' &&
+            tolower(file_str[len-3]) == 'a' &&
+            tolower(file_str[len-2]) == 'u' &&
+            (tolower(file_str[len-1]) == 'c' ||
+                tolower(file_str[len-1]) == 'o')) ||
+            (len >= 4 &&
             file_str[len-4] == '.' &&
             tolower(file_str[len-3]) == 'p' &&
             tolower(file_str[len-2]) == 'y' &&
             (tolower(file_str[len-1]) == 'c' ||
-                tolower(file_str[len-1]) == 'o'))
+                tolower(file_str[len-1]) == 'o')))
         {
             *filename = PyString_FromStringAndSize(file_str, len-1);
             if (*filename == NULL)

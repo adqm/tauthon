@@ -25,7 +25,7 @@ def main():
     gr = driver.load_grammar("Grammar.txt")
     dr = driver.Driver(gr, convert=pytree.convert)
 
-    fn = "example.py"
+    fn = "example.tau"
     tree = dr.parse_file(fn, debug=True)
     if not diff(fn, tree):
         print "No diffs."
@@ -40,9 +40,9 @@ def main():
         if mod is None or not hasattr(mod, "__file__"):
             continue
         fn = mod.__file__
-        if fn.endswith(".pyc"):
+        if fn.endswith((".pyc", ".tauc")):
             fn = fn[:-1]
-        if not fn.endswith(".py"):
+        if not fn.endswith((".py", ".tau")):
             continue
         print >>sys.stderr, "Parsing", fn
         tree = dr.parse_file(fn, debug=True)
@@ -57,7 +57,7 @@ def main():
             continue
         print >>sys.stderr, "Scanning", dir, "..."
         for name in names:
-            if not name.endswith(".py"):
+            if not name.endswith((".py", ".tau")):
                 continue
             print >>sys.stderr, "Parsing", name
             fn = os.path.join(dir, name)

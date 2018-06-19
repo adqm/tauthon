@@ -98,7 +98,7 @@ class CompilerTest(unittest.TestCase):
     def testLineNo(self):
         # Test that all nodes except Module have a correct lineno attribute.
         filename = __file__
-        if filename.endswith((".pyc", ".pyo")):
+        if filename.endswith((".pyc", ".pyo", ".tauc", ".tauo")):
             filename = filename[:-1]
         tree = compiler.parseFile(filename)
         self.check_lineno(tree)

@@ -3732,20 +3732,22 @@ class Test_import(FixerTestCase):
 
         self.always_exists = False
         self.present_files = set(['__init__.py'])
-        expected_extensions = ('.py', os.path.sep, '.pyc', '.so', '.sl', '.pyd')
-        names_to_test = (p("/spam/eggs.py"), "ni.py", p("../../shrubbery.py"))
+        expected_extensions = ('.tau', '.py', os.path.sep, '.pyc', '.so', '.sl',
+                               '.pyd', '.tauc', '.tauo')
+        names_to_test = (p('/spam/eggs.py'), 'ni.py', p('../../shrubbery.py'),
+                         p('/spam/eggs.tau'), 'ni.tau', p('../../shrubbery.tau'))
 
         for name in names_to_test:
             self.files_checked = []
             self.filename = name
-            self.unchanged("import jam")
+            self.unchanged('import jam')
 
             if os.path.dirname(name):
                 name = os.path.dirname(name) + '/jam'
             else:
                 name = 'jam'
             expected_checks = set(name + ext for ext in expected_extensions)
-            expected_checks.add("__init__.py")
+            expected_checks.add('__init__.py')
 
             self.assertEqual(set(self.files_checked), expected_checks)
 

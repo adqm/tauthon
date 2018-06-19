@@ -103,15 +103,20 @@ struct filedescr * _PyImport_Filetab = NULL;
 #ifdef RISCOS
 static const struct filedescr _PyImport_StandardFiletab[] = {
     {"/py", "U", PY_SOURCE},
+    {"/tau", "U", PY_SOURCE},
     {"/pyc", "rb", PY_COMPILED},
+    {"/tauc", "rb", PY_COMPILED},
     {0, 0}
 };
 #else
 static const struct filedescr _PyImport_StandardFiletab[] = {
     {".py", "U", PY_SOURCE},
+    {".tau", "U", PY_SOURCE},
 #ifdef MS_WINDOWS
+    {".tauw", "U", PY_SOURCE},
     {".pyw", "U", PY_SOURCE},
 #endif
+    {".tauc", "rb", PY_COMPILED},
     {".pyc", "rb", PY_COMPILED},
     {0, 0}
 };
@@ -184,9 +189,13 @@ _PyImport_Init(void)
 #ifndef RISCOS
             if (strcmp(filetab->suffix, ".pyc") == 0)
                 filetab->suffix = ".pyo";
+            else if (strcmp(filetab->suffix, ".tauc") == 0)
+                filetab->suffix = ".tauo";
 #else
             if (strcmp(filetab->suffix, "/pyc") == 0)
                 filetab->suffix = "/pyo";
+            else if (strcmp(filetab->suffix, "/tauc") == 0)
+                filetab->suffix = "/tauo";
 #endif
         }
     }
@@ -768,7 +777,8 @@ make_compiled_pathname(char *pathname, char *buf, size_t buflen)
 #ifdef MS_WINDOWS
     /* Treat .pyw as if it were .py.  The case of ".pyw" must match
        that used in _PyImport_StandardFiletab. */
-    if (len >= 4 && strcmp(&pathname[len-4], ".pyw") == 0)
+    if ((len >= 4 && strcmp(&pathname[len-4], ".pyw") == 0) ||
+            (len >= 5 && strcmp(&pathname[len-5], ".tauw") == 0))
         --len;          /* pretend 'w' isn't there */
 #endif
     memcpy(buf, pathname, len);

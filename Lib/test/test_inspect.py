@@ -475,7 +475,8 @@ class TestBuggyCases(GetSourceBase):
 
     @unittest.skipIf(
         not hasattr(unicodedata, '__file__') or
-            unicodedata.__file__[-4:] in (".pyc", ".pyo"),
+            unicodedata.__file__[-4:] in (".pyc", ".pyo") or
+            unicodedata.__file__[-5:] in (".tauc", ".tauo"),
         "unicodedata is not an external binary module")
     def test_findsource_binary(self):
         self.assertRaises(IOError, inspect.getsource, unicodedata)

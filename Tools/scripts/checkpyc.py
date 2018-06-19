@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# Check that all ".pyc" files exist and are up-to-date
+# Check that all compiled files exist and are up-to-date
 # Uses module 'os'
 
 import sys
@@ -28,7 +28,7 @@ def main():
             print 'Checking ', repr(dirname), '...'
         names.sort()
         for name in names:
-            if name[-3:] == '.py':
+            if name[-3:] == '.py' or name[-4:] == '.tau':
                 name = os.path.join(dirname, name)
                 try:
                     st = os.stat(name)
@@ -47,14 +47,14 @@ def main():
                 mtime_str = f.read(4)
                 f.close()
                 if magic_str <> MAGIC:
-                    print 'Bad MAGIC word in ".pyc" file',
+                    print 'Bad MAGIC word in compiled file',
                     print repr(name_c)
                     continue
                 mtime = get_long(mtime_str)
                 if mtime == 0 or mtime == -1:
-                    print 'Bad ".pyc" file', repr(name_c)
+                    print 'Bad compiled file', repr(name_c)
                 elif mtime <> st[ST_MTIME]:
-                    print 'Out-of-date ".pyc" file',
+                    print 'Out-of-date compiled file',
                     print repr(name_c)
 
 def get_long(s):

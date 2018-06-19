@@ -890,7 +890,8 @@ PyRun_InteractiveOneFlags(FILE *fp, const char *filename, PyCompilerFlags *flags
 static int
 maybe_pyc_file(FILE *fp, const char* filename, const char* ext, int closeit)
 {
-    if (strcmp(ext, ".pyc") == 0 || strcmp(ext, ".pyo") == 0)
+    if (strcmp(ext, ".pyc") == 0 || strcmp(ext, ".pyo") == 0 ||
+            strcmp(ext, ".tauc") == 0 || strcmp(ext, ".tauo") == 0)
         return 1;
 
     /* Only look into the file if we are allowed to close it, since
@@ -955,7 +956,7 @@ PyRun_SimpleFileExFlags(FILE *fp, const char *filename, int closeit,
         if (closeit)
             fclose(fp);
         if ((fp = fopen(filename, "rb")) == NULL) {
-            fprintf(stderr, "python: Can't reopen .pyc file\n");
+            fprintf(stderr, "tauthon: Can't reopen compiled file\n");
             goto done;
         }
         /* Turn on optimization if a .pyo file is given */
@@ -1408,7 +1409,7 @@ run_pyc_file(FILE *fp, const char *filename, PyObject *globals,
     magic = PyMarshal_ReadLongFromFile(fp);
     if (magic != PyImport_GetMagicNumber()) {
         PyErr_SetString(PyExc_RuntimeError,
-                   "Bad magic number in .pyc file");
+                   "Bad magic number in compiled file");
         return NULL;
     }
     (void) PyMarshal_ReadLongFromFile(fp);
@@ -1417,7 +1418,7 @@ run_pyc_file(FILE *fp, const char *filename, PyObject *globals,
     if (v == NULL || !PyCode_Check(v)) {
         Py_XDECREF(v);
         PyErr_SetString(PyExc_RuntimeError,
-                   "Bad code object in .pyc file");
+                   "Bad code object in compiled file");
         return NULL;
     }
     co = (PyCodeObject *)v;
